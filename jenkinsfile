@@ -1,6 +1,30 @@
 pipeline {
   agent any
   stages {
+    stage('Setup') {
+      steps {
+        // Increase Git buffer size to handle larger payloads
+        sh 'git config --global http.postBuffer 104857600'
+      }
+    }
+    stage('Checkout Code') {
+      steps {
+        script {
+          int retryCount = 3
+          for (int i = 0; i < retryCount; i++) {
+            try {
+              checkout scm
+              break
+            } catch (Exception e) {
+              if (i == retryCount - 1) {
+                throw e
+              }
+              sleep(time: 10, unit: 'SECONDS')
+            }
+          }
+        }
+      }
+    }
     stage('Verify Installations') {
       steps {
         sh '''
