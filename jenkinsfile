@@ -31,19 +31,5 @@ parameters:
         }
       }
     }
-    stage('Static Analysis with SonarQube') {
-      steps {
-        script {
-          // Run SonarQube scanner
-          sh '''
-            sonarqube/bin/sonar-scanner \
-              -Dsonar.projectKey=test \
-              -Dsonar.sources=. \
-              -Dsonar.host.url=http://localhost:9000 \
-              -Dsonar.token=sqp_bac9de69170a6f90dc12b917025d11c822332d1d
-          '''
-        }
-      }
-    }
   }
 }
